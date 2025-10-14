@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Concept Map Library | Saveetha Calculator</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+  <nav class="top-nav">
+    <div class="logo">
+      <span class="icon">🧮</span>
+      Savetha Calculator
+    </div>
+    <div class="nav-links">
+      <a href="#submit-request" class="nav-link">Contact Us</a>
+      <a href="#" class="nav-link">Features</a>
+      <a href="#" class="nav-link">Tools</a>
+    </div>
+  </nav>
+
+  <!-- Features Dashboard -->
+  <nav class="features-dashboard">
+    <ul class="dashboard-list">
+      <li><a href="#concept-maps" class="dashboard-link">Concept Maps</a></li>
+      <li><a href="#cgpa-calculator" class="dashboard-link">CGPA Calculator</a></li>
+      <li><a href="#attendance-calculator" class="dashboard-link">Attendance Calculator</a></li>
+      <li><a href="#assignment-tutorials" class="dashboard-link">Assignment & Tutorials</a></li>
+      <li><a href="#faculty-section" class="dashboard-link">Call Faculty</a></li>
+      <li><a href="#submit-request" class="dashboard-link">Submit Request</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header class="hero" id="concept-maps">
+      <h1 class="hero-title">Unlock Your Learning Superpowers</h1>
+      <p class="hero-subtitle">Dive into concept maps that make studying feel like an adventure. Search, explore, and conquer your courses!</p>
+      <p class="hero-description">Use the search below to find concept maps for your subjects and courses. (Want to upload missing concept maps? Use the Submit Request section!)</p>
+    </header>
+
+    <div class="search-wrapper">
+      <input type="text" id="search" placeholder="Search for courses like 'Java' or 'Algorithms'... 🚀">
+    </div>
+
+    <div id="mapGrid" class="grid"></div>
+
+    <!-- CGPA Calculator Section -->
+    <section class="calculator-section" id="cgpa-calculator">
+      <header class="section-hero">
+        <h2 class="section-title">CGPA Calculator</h2>
+        <p class="section-subtitle">Track your academic progress and boost your grades with ease! 🚀</p>
+      </header>
+
+      <div class="calculator">
+        <div class="input-group">
+          <label>Number of S Grades:</label>
+          <input type="number" id="s" min="0" value="0" />
+        </div>
+        <div class="input-group">
+          <label>Number of A Grades:</label>
+          <input type="number" id="a" min="0" value="0" />
+        </div>
+        <div class="input-group">
+          <label>Number of B Grades:</label>
+          <input type="number" id="b" min="0" value="0" />
+        </div>
+        <div class="input-group">
+          <label>Number of C Grades:</label>
+          <input type="number" id="c" min="0" value="0" />
+        </div>
+        <div class="input-group">
+          <label>Number of D Grades:</label>
+          <input type="number" id="d" min="0" value="0" />
+        </div>
+        <div class="input-group">
+          <label>Number of E Grades:</label>
+          <input type="number" id="e" min="0" value="0" />
+        </div>
+        <button onclick="calculateCGPA()">Calculate CGPA</button>
+        <div id="result">10.00</div>
+      </div>
+    </section>
+
+    <!-- Attendance Calculator Section -->
+    <section class="calculator-section" id="attendance-calculator">
+      <header class="section-hero">
+        <h2 class="section-title">Attendance Calculator</h2>
+        <p class="section-subtitle">Calculate your attendance and see what it takes to reach 80%! 📊</p>
+      </header>
+      <div class="calculator attendance-calc">
+        <div class="input-group">
+          <label>Classes Attended:</label>
+          <input type="number" id="attended" min="0" value="0" placeholder="e.g., 40" />
+        </div>
+        <div class="input-group">
+          <label>Total Classes:</label>
+          <input type="number" id="total" min="0" value="0" placeholder="e.g., 50" />
+        </div>
+        <button onclick="calculateAttendance()">Calculate Attendance</button>
+        <div id="attendance-result">
+          <div class="attendance-percent">0.0%</div>
+          <p id="attendance-note">Enter your class details above.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Assignment & Tutorials Section -->
+    <section class="assignment-section" id="assignment-tutorials">
+      <header class="section-hero">
+        <h2 class="section-title">Assignment & Tutorials</h2>
+        <p class="section-subtitle">Access assignments and tutorials to excel in your coursework. Search and dive in! 📚</p>
+      </header>
+      <div class="search-wrapper">
+        <input type="text" id="assignment-search" placeholder="Search assignments/tutorials by subject or code... 📖">
+      </div>
+      <div id="assignmentGrid" class="grid"></div>
+    </section>
+
+    <!-- Faculty Section -->
+    <section class="faculty-section" id="faculty-section">
+      <header class="section-hero">
+        <h2 class="section-title">Call Faculty</h2>
+        <p class="section-subtitle">Connect with your professors for guidance and support. Search and reach out! 📞</p>
+      </header>
+      <div class="search-wrapper">
+        <input type="text" id="faculty-search" placeholder="Search faculty by name or course... 🔍">
+      </div>
+      <div id="facultyGrid" class="grid"></div>
+    </section>
+
+    <!-- Submit Request Section (Contact Us Form) -->
+    <section class="request-section" id="submit-request">
+      <header class="section-hero">
+        <h2 class="section-title">Contact Us - Submit Request</h2>
+        <p class="section-subtitle">Request to add phone numbers, faculty, concept maps, or assignments/tutorials. Upload files for maps/assignments! 📧</p>
+      </header>
+      <div class="calculator request-form">
+        <form id="requestForm" enctype="multipart/form-data">
+          <div class="input-group">
+            <label for="request-type">Request Type:</label>
+            <select id="request-type" required>
+              <option value="">Select Type</option>
+              <option value="phone-number">Add Phone Number</option>
+              <option value="faculty">Add Faculty (Name, Rating)</option>
+              <option value="concept-map">Add Concept Map (Upload File)</option>
+              <option value="assignment">Add Assignment/Tutorial (Upload File)</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <!-- Phone Number Fields -->
+          <div id="phone-fields" style="display: none;">
+            <div class="input-group">
+              <label for="phone-number">Phone Number:</label>
+              <input type="tel" id="phone-number" placeholder="e.g., +91-7569363309" required />
+            </div>
+            <div class="input-group">
+              <label for="phone-name">Associated Name (e.g., Faculty/Student):</label>
+              <input type="text" id="phone-name" placeholder="e.g., Dr. John Doe" required />
+            </div>
+          </div>
+
+          <!-- Faculty Fields -->
+          <div id="faculty-fields" style="display: none;">
+            <div class="input-group">
+              <label for="faculty-name">Faculty Name:</label>
+              <input type="text" id="faculty-name" placeholder="e.g., Dr. John Doe" required />
+            </div>
+            <div class="input-group">
+              <label for="faculty-rating">Rating (1-5):</label>
+              <input type="number" id="faculty-rating" min="1" max="5" step="0.1" required />
+            </div>
+          </div>
+
+          <!-- Upload Fields for Concept Map/Assignment -->
+          <div id="upload-fields" style="display: none;">
+            <div class="input-group">
+              <label for="upload-file">Upload File (PDF/Image):</label>
+              <input type="file" id="upload-file" accept=".pdf,.jpg,.jpeg,.png" required />
+            </div>
+            <div class="input-group">
+              <label for="upload-description">File Description (Subject/Code):</label>
+              <input type="text" id="upload-description" placeholder="e.g., CSAO9 - Java Concept Map" required />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="user-email">Your Email (must end with @saveetha.com):</label>
+            <input type="email" id="user-email" placeholder="yourname@saveetha.com" required pattern=".*@saveetha\.com$" title="Email must end with @saveetha.com" />
+          </div>
+
+          <div class="input-group">
+            <label for="description">Additional Details:</label>
+            <textarea id="description" rows="4" placeholder="More info about your request..." required></textarea>
+          </div>
+
+          <button type="submit">Send Request to Admin</button>
+        </form>
+
+        <div id="form-message" style="display: none; margin-top: 20px; text-align: center;"></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="maps.js"></script>
+  <script src="faculty.js"></script>
+  <script src="assignments.js"></script>
+  
+  <script>
+    // Initialize EmailJS (replace with your keys)
+    emailjs.init("YOUR_PUBLIC_KEY"); // Your EmailJS Public Key
+
+    // ImgBB API Key for file upload (replace with your free key from imgbb.com)
+    const IMGBB_API_KEY = "YOUR_IMGBB_API_KEY";
+
+    // Concept Maps Data & Render
+    const conceptMaps = [
+      { code: 'CSAO9', title: 'Programming in Java', driveId: 'your-drive-id-1', count: 2 },
+      { code: 'BTAI1', title: 'Biology and Environmental Science for Engineers', driveId: 'your-drive-id-2', count: 8 },
+      { code: 'CSAO4', title: 'Operating Systems Map', driveId: 'your-drive-id-3', count: 3 },
+      { code: 'CSAO5', title: 'Database Management Systems', driveId: 'your-drive-id-4', count: 5 },
+      { code: 'CSAO6', title: 'Design and Analysis of Algorithms', driveId: 'your-drive-id-5', count: 0 },
+      { code: 'CSAO7', title: 'Computer Networks', driveId: 'your-drive-id-6', count: 8 },
+      { code: 'CSAO8', title: 'Python Programming', driveId: 'your-drive-id-7', count: 6 },
+      { code: 'CSAI2', title: 'Computer Architecture', driveId: 'your-drive-id-8', count: 0 },
+      { code: 'CSAI3', title: 'Theory of Computation', driveId: 'your-drive-id-9', count: 6 }
+    ];
+
+    function renderMaps(filter = "") {
+      const grid = document.getElementById("mapGrid");
+      grid.innerHTML = "";
+
+      let filtered = conceptMaps.filter(m => m.title.toLowerCase().includes(filter.toLowerCase()) || m.code.toLowerCase().includes(filter.toLowerCase()));
+
+      if (filter.trim() === "") {
+        filtered = filtered.slice(0, 3);
+        if (filtered.length === 0) {
+          const noResults = document.createElement("div");
+          noResults.className = "no-results";
+          noResults.innerHTML = `<p>Search above to discover concept maps! 🔍</p>`;
+          grid.appendChild(noResults);
+          return;
+        }
+      }
+
+      filtered.forEach((m, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.setAttribute('data-count', m.count || '0');
+        card.innerHTML = `
+          <div class="card-icon">📄</div>
+          <div class="card-content">
+            <div class="code">${m.code}</div>
+            <div class="title">${m.title}</div>
+            <div class="vibe-tag">Boost Your Grades! ✨</div>
+          </div>
+          <div class="view-count">
+            <span class="icon">👁️</span>
+            <span class="count">${m.count || 0}</span>
+          </div>
+        `;
+        card.onclick = () => window.location.href = `https://drive.google.com/uc?id=${m.driveId}`;
+        card.style.animationDelay = `${index * 0.1}s`;
+        grid.appendChild(card);
+      });
+
+      if (filtered.length === 0 && filter.trim() !== "") {
+        const noResults = document.createElement("div");
+        noResults.className = "no-results";
+        noResults.innerHTML = `<p>No concept maps found. Try a different search! 😊</p>`;
+        grid.appendChild(noResults);
+      }
+    }
+
+    document.getElementById("search").addEventListener("input", e => renderMaps(e.target.value));
+
+    setTimeout(() => renderMaps(), 100);
+
+    // CGPA Calculator
+    function calculateCGPA() {
+      const s = parseInt(document.getElementById('s').value) || 0;
+      const a = parseInt(document.getElementById('a').value) || 0;
+      const b = parseInt(document.getElementById('b').value) || 0;
+      const c = parseInt(document.getElementById('c').value) || 0;
+      const d = parseInt(document.getElementById('d').value) || 0;
+      const e = parseInt(document.getElementById('e').value) || 0;
+
+      const totalSubjects = s + a + b + c + d + e;
+      if (totalSubjects === 0) {
+        document.getElementById('result').innerHTML = '0.00';
+        return;
+      }
+
+      const totalPoints = (s * 10) + (a * 9) + (b * 8) + (c * 7) + (d * 6) + (e * 5);
+      const cgpa = totalPoints / totalSubjects;
+
+      document.getElementById('result').innerHTML = cgpa.toFixed(2);
+    }
+
+    calculateCGPA();
+
+    // Attendance Calculator
+    function calculateAttendance() {
+      const attended = parseInt(document.getElementById('attended').value) || 0;
+      const total = parseInt(document.getElementById('total').value) || 0;
+
+      const percent = total > 0 ? ((attended / total) * 100).toFixed(1) : 0.0;
+
+      document.querySelector('.attendance-percent').textContent = `${percent}%`;
+
+      let note = 'Enter your class details above.';
+      if (total > 0) {
+        if (percent >= 80) {
+          note = 'Great job! You\'ve reached 80% attendance! 🎉';
+        } else {
+          const needed = Math.ceil((0.8 * total) - attended);
+          note = needed > 0 ? `Attend ${needed} more classes to reach 80%! 📚` : 'You\'re all set!';
+        }
+      }
+      document.getElementById('attendance-note').textContent = note;
+    }
+
+    // Assignment Data & Render
+    const assignmentsTutorials = [
+      { code: 'CSAO9', title: 'Programming in Java', link: 'https://drive.google.com/your-assignment-link-1', type: 'Assignment' },
+      { code: 'CSAO9', title: 'Programming in Java', link: 'https://drive.google.com/your-tutorial-link-1', type: 'Tutorial' },
+      { code: 'BTAI1', title: 'Biology and Environmental Science for Engineers', link: 'https://drive.google.com/your-assignment-link-2', type: 'Assignment' },
+      { code: 'CSAO4', title: 'Operating Systems Map', link: 'https://drive.google.com/your-tutorial-link-2', type: 'Tutorial' }
+    ];
+
+    function renderAssignments(filter = "") {
+      const grid = document.getElementById("assignmentGrid");
+      grid.innerHTML = "";
+
+      let filtered = assignmentsTutorials.filter(at => at.title.toLowerCase().includes(filter.toLowerCase()) || at.code.toLowerCase().includes(filter.toLowerCase()));
+
+      if (filter.trim() === "") {
+        filtered = filtered.slice(0, 3);
+        if (filtered.length === 0) {
+          const noResults = document.createElement("div");
+          noResults.className = "no-results";
+          noResults.innerHTML = `<p>Search above to discover assignments and tutorials! 🔍</p>`;
+          grid.appendChild(noResults);
+          return;
+        }
+      }
+
+      filtered.forEach((at, index) => {
+        const card = document.createElement("div");
+        card.className = "card assignment-card";
+        card.innerHTML = `
+          <div class="card-icon">📚</div>
+          <div class="card-content">
+            <div class="code">${at.code}</div>
+            <div class="title">${at.title}</div>
+            <a href="${at.link}" class="assignment-link" target="_blank">${at.type} 📎</a>
+            <div class="vibe-tag">Get Started! 📖</div>
+          </div>
+        `;
+        card.style.animationDelay = `${index * 0.1}s`;
+        grid.appendChild(card);
+      });
+
+      if (filtered.length === 0 && filter.trim() !== "") {
+        const noResults = document.createElement("div");
+        noResults.className = "no-results";
+        noResults.innerHTML = `<p>No assignments or tutorials found. Try a different search! 😊</p>`;
+        grid.appendChild(noResults);
+      }
+    }
+
+    document.getElementById("assignment-search").addEventListener("input", e => renderAssignments(e.target.value));
+
+    setTimeout(() => renderAssignments(), 300);
+
+    // Faculty Data & Render
+    const facultyMembers = [
+      { name: 'Dr. John Doe', phone: '+91-9876543210', course: 'Java Programming', rating: 4.8 },
+      { name: 'Prof. Jane Smith', phone: '+91-9876543211', course: 'Data Structures', rating: 4.5 },
+      { name: 'Dr. Alice Johnson', phone: '+91-9876543212', course: 'Operating Systems', rating: 4.9 }
+    ];
+
+    function renderFaculty(filter = "") {
+      const grid = document.getElementById("facultyGrid");
+      grid.innerHTML = "";
+
+      let filtered = facultyMembers.filter(f => f.name.toLowerCase().includes(filter.toLowerCase()) || f.course.toLowerCase().includes(filter.toLowerCase()));
+
+      if (filter.trim() === "") {
+        filtered = filtered.slice(0, 3);
+        if (filtered.length === 0) {
+          const noResults = document.createElement("div");
+          noResults.className = "no-results";
+          noResults.innerHTML = `<p>Search above to find faculty contacts! 🔍</p>`;
+          grid.appendChild(noResults);
+          return;
+        }
+      }
+
+      filtered.forEach((f, index) => {
+        const card = document.createElement("div");
+        card.className = "card faculty-card";
+        card.innerHTML = `
+          <div class="card-icon">👨‍🏫</div>
+          <div class="card-content">
+            <div class="name">${f.name}</div>
+            <div class="course">${f.course}</div>
+            <div class="phone">📞 ${f.phone}</div>
+            <div class="rating">
+              <span class="stars">⭐⭐⭐⭐⭐</span>
+              <span>(${f.rating}/5)</span>
+            </div>
+          </div>
+        `;
+        card.onclick = () => window.location.href = `tel:${f.phone}`;
+        card.style.animationDelay = `${index * 0.1}s`;
+        grid.appendChild(card);
+      });
+
+      if (filtered.length === 0 && filter.trim() !== "") {
+        const noResults = document.createElement("div");
+        noResults.className = "no-results";
+        noResults.innerHTML = `<p>No faculty found. Try a different search! 😊</p>`;
+        grid.appendChild(noResults);
+      }
+    }
+
+    document.getElementById("faculty-search").addEventListener("input", e => renderFaculty(e.target.value));
+
+    setTimeout(() => renderFaculty(), 200);
+
+    // Form Type Change Handler
+    document.getElementById('request-type').addEventListener('change', function() {
+      const type = this.value;
+      document.getElementById('phone-fields').style.display = type === 'phone-number' ? 'block' : 'none';
+      document.getElementById('faculty-fields').style.display = type === 'faculty' ? 'block' : 'none';
+      document.getElementById('upload-fields').style.display = (type === 'concept-map' || type === 'assignment') ? 'block' : 'none';
+    });
+
+    // Submit Request Form with File Upload & Email
+    document.getElementById('requestForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const type = document.getElementById('request-type').value;
+      const email = document.getElementById('user-email').value;
+      const description = document.getElementById('description').value;
+
+      if (!email.endsWith('@saveetha.com')) {
+        alert('Email must end with @saveetha.com');
+        return;
+      }
+
+      let extraData = '';
+      let fileLink = '';
+      if (type === 'phone-number') {
+        extraData = `Phone: ${document.getElementById('phone-number').value}, Name: ${document.getElementById('phone-name').value}`;
+      } else if (type === 'faculty') {
+        extraData = `Name: ${document.getElementById('faculty-name').value}, Rating: ${document.getElementById('faculty-rating').value}`;
+      } else if (type === 'concept-map' || type === 'assignment') {
+        const fileInput = document.getElementById('upload-file');
+        if (fileInput.files.length === 0) {
+          alert('Please upload a file for Concept Map or Assignment.');
+          return;
+        }
+
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+          const uploadResponse = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+            method: 'POST',
+            body: formData
+          });
+          const uploadData = await uploadResponse.json();
+          if (uploadData.success) {
+            fileLink = uploadData.data.url;
+            extraData = `Description: ${document.getElementById('upload-description').value}, File Link: ${fileLink}`;
+          } else {
+            alert('File upload failed. Please try again.');
+            return;
+          }
+        } catch (error) {
+          alert('Upload error: ' + error.message);
+          return;
+        }
+      }
+
+      // Prepare EmailJS params
+      const params = {
+        type: type,
+        email: email,
+        description: description,
+        extra: extraData || 'No additional data',
+        to_email: 'yogeshwaroff@gmail.com' // Your email
+      };
+
+      // Send email via EmailJS (replace IDs)
+      emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', params)
+        .then((response) => {
+          console.log('SUCCESS!', response.status, response.text);
+          document.getElementById('form-message').innerHTML = '<p style="color: green;">Request sent successfully! File link (if any) included. Check your email for confirmation. 🎉</p>';
+          document.getElementById('form-message').style.display = 'block';
+          this.reset();
+          // Hide fields
+          document.getElementById('phone-fields').style.display = 'none';
+          document.getElementById('faculty-fields').style.display = 'none';
+          document.getElementById('upload-fields').style.display = 'none';
+        }, (error) => {
+          console.log('FAILED...', error);
+          document.getElementById('form-message').innerHTML = '<p style="color: red;">Failed to send. Error: ' + error.text + ' 😔</p>';
+          document.getElementById('form-message').style.display = 'block';
+        });
+    });
+
+    // Smooth scroll for dashboard links
+    document.querySelectorAll('.dashboard-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
